@@ -1,4 +1,4 @@
-.PHONY: test deploy build generate-db docker-build clean
+.PHONY: test deploy build generate-db run docker-build clean
 
 # Frig-Off: French Spam Call Blocker
 # PIR server using Swift + homomorphic encryption, deployed via Docker on Clever Cloud.
@@ -24,14 +24,23 @@ test:
 		$(SWIFT) test; \
 	else \
 		echo "Swift not available – validating project skeleton."; \
-		test -f Package.swift    || { echo "FAIL: Package.swift missing"; exit 1; }; \
-		test -f TODOs.md         || { echo "FAIL: TODOs.md missing"; exit 1; }; \
-		test -f Dockerfile       || { echo "FAIL: Dockerfile missing"; exit 1; }; \
-		test -d Sources/GenerateDB   || { echo "FAIL: Sources/GenerateDB missing"; exit 1; }; \
-		test -d Sources/FrigOffKit   || { echo "FAIL: Sources/FrigOffKit missing"; exit 1; }; \
-		test -d Tests/FrigOffKitTests || { echo "FAIL: Tests missing"; exit 1; }; \
+		test -f Package.swift            || { echo "FAIL: Package.swift missing"; exit 1; }; \
+		test -f TODOs.md                 || { echo "FAIL: TODOs.md missing"; exit 1; }; \
+		test -f Dockerfile               || { echo "FAIL: Dockerfile missing"; exit 1; }; \
+		test -d Sources/GenerateDB       || { echo "FAIL: Sources/GenerateDB missing"; exit 1; }; \
+		test -d Sources/FrigOffKit       || { echo "FAIL: Sources/FrigOffKit missing"; exit 1; }; \
+		test -d Sources/PIRServer        || { echo "FAIL: Sources/PIRServer missing"; exit 1; }; \
+		test -d Sources/PrivacyPass      || { echo "FAIL: Sources/PrivacyPass missing"; exit 1; }; \
+		test -d Tests/FrigOffKitTests    || { echo "FAIL: Tests/FrigOffKitTests missing"; exit 1; }; \
+		test -d Tests/PIRServerTests     || { echo "FAIL: Tests/PIRServerTests missing"; exit 1; }; \
+		test -f Sources/PIRServer/main.swift || { echo "FAIL: PIRServer entry point missing"; exit 1; }; \
 		echo "OK (skeleton validated, swift tests skipped)"; \
 	fi
+
+## ── Run ────────────────────────────────────────────────────────────────────────
+
+run:
+	$(SWIFT) run pir-server --config config/service-config.json --port $(PORT)
 
 ## ── Database generation ────────────────────────────────────────────────────────
 

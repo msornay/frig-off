@@ -117,20 +117,20 @@ plaintext phone number.
 
 ### Privacy Pass token setup
 
-- [ ] Configure `config.json` with user tiers
-- [ ] Create a hardcoded `userTierToken` for personal use (shared among your devices)
-- [ ] The token issuer validates this token and issues Privacy Pass tokens
-- [ ] For dev use, a single tier with a single static token is sufficient
+- [x] Configure `config.json` with user tiers
+- [x] Create a hardcoded `userTierToken` for personal use (shared among your devices)
+- [x] The token issuer validates this token and issues Privacy Pass tokens
+- [x] For dev use, a single tier with a single static token is sufficient
 - [ ] Document how to add a new user (buddy): add their token to the config, redeploy
 
 ### Server config.json structure
 
-- [ ] Define the config with:
+- [x] Define the config with:
   ```
-  - users: { "tier1": { token: "<your-shared-secret>" } }
-  - useCases:
-    - "block": { fileStem: "block", shardCount: <TBD> }
-    - "identity": { fileStem: "identity", shardCount: <TBD> }  (optional)
+  - users: [{ "tier": "tier1", "tokens": ["<your-shared-secret>"] }]
+  - usecases:
+    - { "name": "block", "fileStem": "data/block", "shardCount": 10 }
+    - { "name": "identity", "fileStem": "data/identity", "shardCount": 10 }
   ```
 - [ ] Shard count depends on database size -- follow reference impl guidance
 - [ ] Test: request a Privacy Pass token with a valid `userTierToken` -> success
@@ -148,13 +148,13 @@ plaintext phone number.
 
 ### Containerized Swift server
 
-- [ ] Create a `Dockerfile` for the PIR server:
+- [x] Create a `Dockerfile` for the PIR server:
   - Base image: `swift:6.0` (or later)
   - Build stage: `swift build -c release`
   - Run stage: copy binary + processed database shards
   - Expose the HTTP port (Clever Cloud assigns `$PORT`)
-- [ ] The server binary must listen on `0.0.0.0:$PORT` (Clever Cloud requirement)
-- [ ] Include the preprocessed database shards in the image (they're static until you update prefixes)
+- [x] The server binary must listen on `0.0.0.0:$PORT` (Clever Cloud requirement)
+- [x] Include the preprocessed database shards in the image (they're static until you update prefixes)
 - [ ] **Performance note**: BFV homomorphic operations are CPU-intensive. Start with a Clever Cloud M instance (2 vCPUs). Monitor and adjust.
 
 ### Deployment checklist

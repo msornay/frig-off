@@ -1,5 +1,5 @@
 # Frig-Off PIR Server
-# Multi-stage build: generate database, build server, run.
+# Multi-stage build: generate database, process shards, build server, run.
 #
 # Prerequisites: swift-homomorphic-encryption's PIRProcessDatabase must be
 # available during the build stage to process the keyword databases into
@@ -35,8 +35,10 @@ FROM swift:6.0-slim
 
 WORKDIR /app
 
-# Copy the PIR service binary (built from pir-service-example, added later).
-# For now, copy the database generation output.
+# Copy the PIR server binary.
+COPY --from=builder /build/.build/release/pir-server /usr/local/bin/pir-server
+
+# Copy processed database shards and configuration.
 COPY --from=builder /build/data/ data/
 COPY --from=builder /build/config/service-config.json config/service-config.json
 
@@ -44,6 +46,4 @@ COPY --from=builder /build/config/service-config.json config/service-config.json
 ENV PORT=8080
 EXPOSE ${PORT}
 
-# The PIRService binary will be added in Phase 2 when the server is built.
-# For now this image contains the processed database shards.
-CMD ["echo", "PIR service binary not yet integrated -- see TODOs.md Phase 2"]
+CMD ["pir-server", "--config", "config/service-config.json"]
