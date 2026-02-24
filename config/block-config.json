@@ -1,0 +1,8 @@
+{
+  "databaseType": "keyword",
+  "inputDatabase": "data/block.binpb",
+  "outputDatabase": "data/block-SHARD_ID.bin",
+  "outputPirParameters": "data/block-pir-params-SHARD_ID.txtpb",
+  "rlweParameters": "n_4096_logq_27_28_28_logt_5",
+  "shardCount": 10
+}

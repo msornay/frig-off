@@ -63,7 +63,7 @@ plaintext phone number.
 
 ### ARCEP NPV prefix dataset
 
-- [ ] Create `input.txtpb` containing French commercial call prefixes to block
+- [x] Create `input.txtpb` containing French commercial call prefixes to block
 - [ ] The ARCEP-designated prefixes for "demarchage telephonique" (NPV ranges):
 
   **Metropolitan France (12 prefixes, 4-digit):**
@@ -95,21 +95,21 @@ plaintext phone number.
 
   **Total: ~12,500,000 numbers**
 
-- [ ] Write a Swift script (or extend `PIRProcessDatabase`) to **expand** prefixes into individual E.164 numbers for the txtpb file. PIR databases are key-value stores -- each phone number is a key, the value is the block/identity metadata
-- [ ] For the `"block"` use case: each number maps to a simple "block" flag
-- [ ] For the `"identity"` use case (optional V1): each number maps to a label like "Demarchage commercial"
+- [x] Write a Swift script (or extend `PIRProcessDatabase`) to **expand** prefixes into individual E.164 numbers for the txtpb file. PIR databases are key-value stores -- each phone number is a key, the value is the block/identity metadata
+- [x] For the `"block"` use case: each number maps to a simple "block" flag
+- [x] For the `"identity"` use case (optional V1): each number maps to a label like "Demarchage commercial"
 - [ ] Run `PIRProcessDatabase` on the generated txtpb to produce the binary shard files
 - [ ] Measure: how large are the processed shards? How long does preprocessing take for 12.5M entries?
 
 ### Database generation tooling
 
-- [ ] Create a `generate-db` Swift script/target in the server project that:
+- [x] Create a `generate-db` Swift script/target in the server project that:
   1. Takes a list of French prefixes as input (JSON or CLI args)
   2. Expands each prefix to the full E.164 number range
   3. Writes the `input.txtpb` in the format expected by `PIRProcessDatabase`
   4. Runs `PIRProcessDatabase` to produce optimized shards
-- [ ] This script runs at build/deploy time, not at runtime
-- [ ] Make it easy to add/remove prefixes and regenerate
+- [x] This script runs at build/deploy time, not at runtime
+- [x] Make it easy to add/remove prefixes and regenerate
 
 ---
 

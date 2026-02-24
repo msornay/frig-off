@@ -1,0 +1,17 @@
+{
+  "users": {
+    "tier1": {
+      "token": "REPLACE_WITH_YOUR_SECRET_TOKEN"
+    }
+  },
+  "useCases": {
+    "block": {
+      "fileStem": "data/block",
+      "shardCount": 10
+    },
+    "identity": {
+      "fileStem": "data/identity",
+      "shardCount": 10
+    }
+  }
+}
