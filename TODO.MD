@@ -1,7 +1,4 @@
 
-make test should trigger tests in docker containers and PASS!
-
-
 # Frig-Off -- French Spam Call Blocker
 
 > iOS app that blocks French commercial/spam phone calls ("demarchage telephonique")

@@ -18,24 +18,11 @@ build:
 	$(SWIFT) build -c release
 
 ## ── Test ───────────────────────────────────────────────────────────────────────
+## Runs swift test inside a Docker container (swift:6.0).
+## Docker layer caching makes repeated runs fast when only tests change.
 
 test:
-	@if [ -f Package.swift ] && command -v $(SWIFT) >/dev/null 2>&1; then \
-		$(SWIFT) test; \
-	else \
-		echo "Swift not available – validating project skeleton."; \
-		test -f Package.swift            || { echo "FAIL: Package.swift missing"; exit 1; }; \
-		test -f TODOs.md                 || { echo "FAIL: TODOs.md missing"; exit 1; }; \
-		test -f Dockerfile               || { echo "FAIL: Dockerfile missing"; exit 1; }; \
-		test -d Sources/GenerateDB       || { echo "FAIL: Sources/GenerateDB missing"; exit 1; }; \
-		test -d Sources/FrigOffKit       || { echo "FAIL: Sources/FrigOffKit missing"; exit 1; }; \
-		test -d Sources/PIRServer        || { echo "FAIL: Sources/PIRServer missing"; exit 1; }; \
-		test -d Sources/PrivacyPass      || { echo "FAIL: Sources/PrivacyPass missing"; exit 1; }; \
-		test -d Tests/FrigOffKitTests    || { echo "FAIL: Tests/FrigOffKitTests missing"; exit 1; }; \
-		test -d Tests/PIRServerTests     || { echo "FAIL: Tests/PIRServerTests missing"; exit 1; }; \
-		test -f Sources/PIRServer/main.swift || { echo "FAIL: PIRServer entry point missing"; exit 1; }; \
-		echo "OK (skeleton validated, swift tests skipped)"; \
-	fi
+	$(DOCKER) build -f Dockerfile.test -t $(IMAGE_NAME)-test .
 
 ## ── Run ────────────────────────────────────────────────────────────────────────
 
@@ -64,4 +51,4 @@ deploy: docker-build
 
 clean:
 	$(SWIFT) package clean 2>/dev/null || true
-	$(DOCKER) rmi $(IMAGE_NAME) 2>/dev/null || true
+	$(DOCKER) rmi $(IMAGE_NAME) $(IMAGE_NAME)-test 2>/dev/null || true

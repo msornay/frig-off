@@ -1,0 +1,17 @@
+# Dockerfile for running Swift tests in a container.
+# Usage: docker build -f Dockerfile.test .
+FROM swift:6.0
+
+WORKDIR /build
+
+# Copy manifests first for dependency caching.
+COPY Package.swift ./
+RUN swift package resolve
+
+# Copy source and tests.
+COPY Sources/ Sources/
+COPY Tests/ Tests/
+COPY config/ config/
+
+# Run tests — build failure here means tests failed.
+RUN swift test
