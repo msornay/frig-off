@@ -2,7 +2,10 @@ import Foundation
 import Hummingbird
 
 /// Errors raised by the PIR server.
-enum PIRServerError: Error, CustomStringConvertible {
+///
+/// Conforms to `HTTPResponseError` so Hummingbird maps each error
+/// variant to the correct HTTP status code automatically.
+enum PIRServerError: Error, HTTPResponseError, CustomStringConvertible {
     case noShardsLoaded(usecase: String)
     case unknownUsecase(name: String)
     case invalidShardIndex(index: Int, count: Int)
@@ -33,8 +36,8 @@ enum PIRServerError: Error, CustomStringConvertible {
         }
     }
 
-    /// Map errors to appropriate HTTP status codes.
-    var httpStatus: HTTPResponse.Status {
+    /// Map errors to appropriate HTTP status codes (HTTPResponseError).
+    var status: HTTPResponse.Status {
         switch self {
         case .unauthorized:
             return .unauthorized
