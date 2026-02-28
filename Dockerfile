@@ -9,12 +9,16 @@
 FROM swift:6.0 AS builder
 
 WORKDIR /build
-COPY Package.swift Package.resolved ./
+
+# Copy manifest first for dependency caching.
+COPY Package.swift ./
+RUN swift package resolve
+
 COPY Sources/ Sources/
 COPY Tests/ Tests/
 COPY config/ config/
 
-# Resolve dependencies and build in release mode.
+# Build in release mode.
 RUN swift build -c release
 
 # Generate the PIR keyword databases (block + identity).
