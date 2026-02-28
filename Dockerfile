@@ -50,4 +50,4 @@ COPY --from=builder /build/config/service-config.json config/service-config.json
 ENV PORT=8080
 EXPOSE ${PORT}
 
-CMD ["pir-server", "--config", "config/service-config.json"]
+CMD ["sh", "-c", "pir-server --config config/service-config.json --port $PORT"]
