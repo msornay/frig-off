@@ -1,0 +1,7 @@
+.build/
+.swiftpm/
+data/
+*.bin
+*.binpb
+Package.resolved
+.git/
