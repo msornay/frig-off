@@ -15,7 +15,6 @@ COPY Package.swift ./
 RUN swift package resolve
 
 COPY Sources/ Sources/
-COPY Tests/ Tests/
 COPY config/ config/
 
 # Build in release mode.
