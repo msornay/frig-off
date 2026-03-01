@@ -1,4 +1,4 @@
-.PHONY: test deploy build generate-db run docker-build clean
+.PHONY: test lint deploy build generate-db run docker-build clean
 
 # Frig-Off: French Spam Call Blocker
 # PIR server using Swift + homomorphic encryption, deployed via Docker on Clever Cloud.
@@ -23,6 +23,12 @@ build:
 
 test:
 	$(DOCKER) build -f Dockerfile.test -t $(IMAGE_NAME)-test .
+
+## ── Lint ──────────────────────────────────────────────────────────────────────
+## Runs SwiftLint inside a Docker container.
+
+lint:
+	$(DOCKER) run --rm -v "$$(pwd):/work" -w /work ghcr.io/realm/swiftlint:latest swiftlint --strict Sources/
 
 ## ── Run ────────────────────────────────────────────────────────────────────────
 
