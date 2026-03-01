@@ -32,7 +32,8 @@ run:
 ## ── Database generation ────────────────────────────────────────────────────────
 
 generate-db:
-	$(SWIFT) run generate-db
+	mkdir -p data
+	$(SWIFT) run -c release generate-db --output data --generate-configs
 
 ## ── Docker ─────────────────────────────────────────────────────────────────────
 
